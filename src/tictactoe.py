@@ -90,9 +90,17 @@ class TicTacToe:
 
             #taking user input
             row, col = list(
-                map(int, input("Enter row and column to fix spot: ").split())
+                map(int, input("Enter row and column with a space between each input: ").split())
             )
             print()
+            
+            # checking for valid user input
+            if row < 1 or row > 3:
+                print("Inputed row is not valid, must be 1 - 3")
+                break
+            if col < 1 or col > 3:
+                print("Inputed column is not valid, must be 1 - 3")
+                break
 
             #fixing the spot
             self.fix_spot(row - 1, col - 1, player)
