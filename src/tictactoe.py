@@ -37,8 +37,7 @@ class TicTacToe:
         # checking cols   
         for i in range(n):
             win = True
-            for j in range(n):
-                win = True
+            for i in range(n):
                 for j in range(n):
                     if self.board[j][i] != player: # the j and i are reversed for cols
                         win = False
@@ -50,6 +49,14 @@ class TicTacToe:
         win = True 
         for i in range(n):
             if self.board[i][j] != player:
+                win = False
+                break
+        if win:
+            return win
+            
+        win = True
+        for i in range(n):
+            if self.board[i][n - 1 - i] != player:
                 win = False
                 break
             if win:
