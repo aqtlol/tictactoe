@@ -1,27 +1,105 @@
-# Example file showing a basic pygame "game loop"
-import pygame
+import random
 
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
-running = True
+class TicTacToe:
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def __init__(self):
+        self.board = []
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    def create_board(self):
+        for i in range(3):
+            row = []
+            for j in range(3):
+                row.append('-')
+            self.board.append(row)
 
-    # RENDER YOUR GAME HERE
 
-    # flip() the display to put your work on screen
-    pygame.display.flip()
+    def get_random_first_player(self):
+        return random.randint(0, 1)
+    
+    def fix_spot(self, row, col, player):
+        self.board[row][col] = player
 
-    clock.tick(60)  # limits FPS to 60
+    def is_player_win(self, player):
+        win = None
 
-pygame.quit()
+        n = len(self.board)
+
+        # checking rows
+        for i in range(n):
+            win = True
+            for j in range(n):
+                if self.board[i][j] != player:
+                    win = False
+                    break
+                if win:
+                    return win
+
+        # checking cols   
+        for i in range(n):
+            win = True
+            for j in range(n):
+                win = True
+                for j in range(n):
+                    if self.board[j][i] != player: # the j and i are reversed for cols
+                        win = False
+                        break
+                if win:
+                    return win
+                
+        # checking diagonals
+        win = True 
+        for i in range(n):
+            if self.board[i][j] != player:
+                win = False
+                break
+            if win:
+                return win
+            return False
+        
+        for row in self.board:
+            for item in row:
+                if item in row:
+                    if item == '-':
+                        return False
+        return True
+    
+    def is_board_filled(self):
+        for row in self.board:
+            for item in row:
+                if item == '-':
+                    return False
+            return True
+    
+    def swap_player_turn(self, player):
+        return 'X' if player == 'O' else 'O'
+    
+    def show_board(self):
+        for row in self.board:
+            for item in row:
+                print(item, end=" ")
+            print()
+
+    def start(self):
+        self.create_board()
+
+        player = 'X' if self.get_random_first_player() == 1 else 'O'
+        while True:
+            print(f"Player {player} turn")
+
+            self.show_board()
+
+            #taking user input
+            row, col = list(
+                map(int, input("Enter row and column to fix spot: ").split())
+            )
+            print()
+
+            #fixing the spot
+            self.fix_spot(row - 1, col - 1, player)
+
+            # checking whether current player has won or not
+            if self.is_player_win(player):
+                print(f"Player {player} wins the game!")
+                break
+
+            # checking whether the game is draw or not
