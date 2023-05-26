@@ -75,7 +75,7 @@ class TicTacToe:
             for item in row:
                 if item == '-':
                     return False
-            return True
+        return True
     
     def swap_player_turn(self, player):
         return 'X' if player == 'O' else 'O'
